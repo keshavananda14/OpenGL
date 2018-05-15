@@ -1,0 +1,124 @@
+// Programmer: Mihalis Tsoukalos
+// Date: Wednesday 04 June 2014
+//
+// A simple OpenGL program that draws a triangle.
+
+/* Compile with "gcc IndianFlag.cpp -lGL -lglut -lm" command */
+
+#include "GL/freeglut.h"
+#include "GL/gl.h"
+#include <stdio.h>
+#include <cmath>
+
+#define PI 3.14
+using namespace std;
+static int a = 0;
+void DrawStar() 
+{
+	glBegin(GL_TRIANGLE_FAN);
+	//All triangles fan out starting with this point
+	glVertex2f (0.5,0.5);
+	for (int i = 0; i <=360; i++)
+	{				
+		if(i % 7 == 0)
+		{
+			if(a == 1)
+				a = 0;
+			else
+				a = 1;
+		}
+		if(a == 0)
+			glColor3f(0.0,0.0,1.0);
+		else
+			glColor3f(1.0,1.0,1.0);
+
+		//glVertex2f(0.1*cos(i*PI/180)+0.5, 0.1*sin(i*PI/180)+0.5);
+		glVertex2f(0.1*cos(i*PI/180)+0.5, 0.15*sin(i*PI/180)+0.5);
+	}
+	glEnd();
+	return;
+}
+
+void DrawStripes() 
+{
+		glColor3f(18.0/255.0,136.0/255.0, 7.0/255.0);
+		glBegin(GL_QUADS);
+			glVertex3f(0.0, 0.0, 0.0);
+			glVertex3f(1.0, 0.0, 0.0);
+			glVertex3f(1.0, 1.0/3.0, 0.0);
+			glVertex3f(0.0, 1.0/3.0, 0.0);
+		glEnd();
+		glColor3f(1.0, 1.0, 1.0);
+		glBegin(GL_QUADS);
+			glVertex3f(0.0, 1.0/3.0, 0.0);
+			glVertex3f(1.0, 1.0/3.0, 0.0);
+			glVertex3f(1.0, 2.0/3.0, 0.0);
+			glVertex3f(0.0, 2.0/3.0, 0.0);
+		glEnd();
+		glColor3f(1.0, 153.0/255.0, 51.0/255.0);
+		glBegin(GL_QUADS);
+			glVertex3f(0.0, 2.0/3.0, 0.0);
+			glVertex3f(1.0, 2.0/3.0, 0.0);
+			glVertex3f(1.0, 3.0/3.0, 0.0);
+			glVertex3f(0.0, 3.0/3.0, 0.0);
+		glEnd();
+		glColor3f(0.0, 0.0, 1.0);
+
+#if 0
+			glBegin (GL_LINES);
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.5, 0.6, 0.0);	
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.58, 0.58, 0.0);	
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.6, 0.5, 0.0);	
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.58, 0.42, 0.0);	
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.5, 0.4, 0.0);	
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.45, 0.45, 0.0);	
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.4, 0.5, 0.0);	
+			glVertex3f(0.5, 0.5, 0.0);	
+			glVertex3f(0.45, 0.55, 0.0);	
+			glVertex3f(0.5, 0.6, 0.0);	
+			glVertex3f(0.58, 0.58, 0.0);	
+			glVertex3f(0.58, 0.58, 0.0);	
+			glVertex3f(0.6, 0.5, 0.0);	
+			glVertex3f(0.6, 0.5, 0.0);	
+			glVertex3f(0.58, 0.42, 0.0);	
+#endif
+		glEnd();
+
+		//printf("===== iStripeIndex = %d ====== fStartY = %f \n",iStripeIndex,fStartY);
+}
+
+void drawTriangle()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	DrawStripes();
+	DrawStar();
+	glFlush();
+}
+
+void Initialize() 
+{
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+	glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+}
+
+int main(int argc, char **argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(950, 500);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("OpenGL - Creating a Flag");
+    Initialize();
+    glutDisplayFunc(drawTriangle);
+    glutMainLoop();
+    return 0;
+}
